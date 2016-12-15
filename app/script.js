@@ -15,30 +15,25 @@ function getData(url) {
     });
 }
 
-var openWeatherAppId = '1e83a150ab5c829ff54fb46e1320d3f6',
+var openWeatherAppId = '66dccd238e9a02466a7b6d04d7fb5d06',
     openWeatherUrl = 'http://api.openweathermap.org/data/2.5/weather',
     openWeatherCityId;
 
-citiesList.addEventListener('change', function(e) {
-    if (e.currentTarget.value == '') {
-
-        result.innerHTML = '';
-
-    } else {
-        openWeatherCityId = e.currentTarget.value;
-        var cookieName = 'cookie' + openWeatherCityId;
-        console.log(cookieName);
-        var cityCookie = getCookie(cookieName);
-
+ function getWeather2(cookieName){
+         var cityCookie = getCookie(cookieName);
        if (document.cookie.indexOf(cookieName) == -1 ) {
-           let urlRequest = openWeatherUrl + '?id=' + openWeatherCityId + '&units=metric&APPID=' + openWeatherAppId;
-
+          // let urlRequest = openWeatherUrl + '?id=' + openWeatherCityId + '&units=metric&APPID=' + openWeatherAppId;
+  let urlRequest = 'weather.json';
             getData(urlRequest).then(
                 function(result) {
                     var cityWeather = JSON.parse(result);
                     showInfo(cityWeather);
-
+             
                     createCookie(cookieName, result);
+                     console.log('обновление данных c сервера');
+                      console.log('создание куки');
+
+
 
                 }).catch(function() {
                 console.log('error');
@@ -50,11 +45,39 @@ citiesList.addEventListener('change', function(e) {
 
            var cityWeather = JSON.parse(cityCookie);
             showInfo(cityWeather);
+             console.log('обновление данных c куки');
          
         }
     }
-}, false);
 
+ function getWeather(e) {
+
+        openWeatherCityId = e.currentTarget.value;
+        var cookieName = 'cookie' + openWeatherCityId;
+        console.log(cookieName);
+   
+
+   getWeather2(cookieName);
+   setInterval(getWeather2(cookieName), 600);
+
+}
+
+
+
+
+
+
+
+citiesList.addEventListener('change', function(e){
+   if (e.currentTarget.value == '') {
+
+        result.innerHTML = '';
+
+    } else {
+
+      getWeather(e);
+    } 
+}, false);
 function showInfo(cityWeather) {
 
     let source = weatherTemplate.innerHTML;
@@ -67,11 +90,13 @@ function showInfo(cityWeather) {
 // Create "session" cookie with a 10-minute expiration
 function createCookie(name, value) {
     var date = new Date();
-    date.setTime(date.getTime() + 600000);
+    date.setTime(date.getTime() + 300);
     var expires = "; expires=" + date.toGMTString();
 
     document.cookie = name + "=" + value + expires + "; path=/";
 }
+
+
 
 function getCookie(cname) {
 
