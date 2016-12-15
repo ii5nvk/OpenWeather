@@ -66,10 +66,10 @@
 
 <script type="text/x-handlebars-template" id="weatherTemplate">
  <h3> Weather in {{name}}, {{sys.country}} </h3>
- <p class="weather-main"><img src="http://openweathermap.org/img/w/{{weather.0.icon}}.png"><span>{{weather.0.main}}</span></p>
- <p class="weather-temperature">Temperature: {{main.temp}}°C</span></p>
- <p class="weather-wind">Wind: {{wind.speed}}m/s</p> 
- <p class="weather-pressure">Pressure: {{main.pressure}}hpa</p> 
+ <p class="weather-main"><span>{{weather.0.main}}</span><img src="http://openweathermap.org/img/w/{{weather.0.icon}}.png"></p>
+ <p class="weather-temperature">Temperature: <span  class="bold">{{main.temp}}°C</span></p>
+ <p class="weather-wind">Wind: <span  class="bold">{{wind.speed}}m/s</span></p> 
+ <p class="weather-pressure">Pressure: <span  class="bold">{{main.pressure}}hpa</span></p> 
 </script>
 
 <!-- build:js js/vendor.min.js
